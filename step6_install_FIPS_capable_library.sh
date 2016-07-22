@@ -6,7 +6,7 @@
 cd Source
 
 # move to ssl' dir
-cd openssl-1.0.1c/
+cd openssl-1.0.2h/
 
 # setup environment
 . ../setenv-reset.sh

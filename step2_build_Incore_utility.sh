@@ -6,11 +6,13 @@
 cd Source
 
 # delete old artifacts
-rm -Rf openssl-fips-2.0.1/
+rm -Rf openssl-fips-2.0.12/
 
 # unpack fresh files
-tar xzf openssl-fips-2.0.1.tar 
-tar xzf ios-incore-2.0.1.tar
+tar xzf openssl-fips-ecp-2.0.12.tar.gz 
+tar xzf ios-incore-2.0.1.tar.gz
+cp -R openssl-fips-2.0.1/ openssl-fips-ecp-2.0.12/
+rm -rf openssl-fips-2.0.1/
 
 # setup environment
 . ./setenv-reset.sh
@@ -20,7 +22,7 @@ tar xzf ios-incore-2.0.1.tar
 env
 
 # move to fips' dir
-cd openssl-fips-2.0.1
+cd openssl-fips-ecp-2.0.12
 
 # configure and make
 ./config

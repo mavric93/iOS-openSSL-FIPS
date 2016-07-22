@@ -19,10 +19,12 @@ CROSS_DEVELOPER="/Applications//Xcode.app/Contents/Developer"
 export CROSS_TOP="/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer"
 
 # CROSS_CHAIN is the location of the actual compiler tools
-export CROSS_CHAIN="$CROSS_TOP"/usr/bin/
+#export CROSS_CHAIN="$CROSS_TOP"/usr/bin/
+export CROSS_CHAIN=/usr/bin/
 
 # CROSS_SDK is the SDK version being used - adjust as appropriate
-for i in 6.1 5.1 5.0 4.3 do
+# for 4.3 or 5.0 (default)
+for i in 9.3 do
 do
   if [ -d "$CROSS_DEVELOPER/Platforms/iPhoneOS.platform//Developer/SDKs/iPhoneOS"$i".sdk" ]; then
     SDKVER=$i
@@ -32,12 +34,6 @@ done
 
 export CROSS_SDK=iPhone"$CROSS_TYPE""$SDKVER".sdk
 
-# configure include iOS SDK PATHS
-IPHONE_SDK=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS"$SDKVER".sdk
-
-export C_INCLUDE_PATH=$IPHONE_SDK/usr/include
-export CPLUS_INCLUDE_PATH=$C_INCLUDE_PATH
-
 #
 # fips/sha/Makefile uses HOSTCC for building fips_standalone_sha1
 #
@@ -46,12 +42,11 @@ export HOSTCFLAGS="-arch i386"
 
 # CROSS_COMPILE is the prefix for the tools - in this case the scripts
 # which invoke the tools with the correct options for 'fat' binary handling
-#export CROSS_COMPILE="`pwd`"/iOS/
 export CROSS_COMPILE="$CROSS_CHAIN"
 
 # FIPS_SIG is the tool for determining the incore fingerprint
 #export FIPS_SIG=/usr/local/ssl/fingerprint-macho
-#export FIPS_SIG="`pwd`"/iOS/incore_macho
+export FIPS_SIG="`pwd`"/iOS/incore_macho
 
 #
 # these remain to be cleaned up ... 
