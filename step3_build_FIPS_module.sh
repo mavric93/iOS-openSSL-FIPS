@@ -6,7 +6,7 @@
 cd Source
 
 # delete old artifacts
-rm -Rf openssl-fips-ecp-2.0.12/
+rm -rf openssl-fips-ecp-2.0.12/
 
 # make incore_macho available to build
 export PATH="/usr/local/bin":$PATH
@@ -22,10 +22,11 @@ cd openssl-fips-ecp-2.0.12
 
 # setup environment
 . ../setenv-reset.sh
-. ../setenv-ios-11.sh
+. ../setenv-ios-10.sh
 
 # configure and make
 ./config
+
+sed -ie "s!^CFLAG=!CFLAG=-isysroot ${CROSS_TOP}/SDKs/${CROSS_SDK} -miphoneos-version-min=${IOS_MIN_SDK_VERSION} !" "Makefile"
+
 make
-
-

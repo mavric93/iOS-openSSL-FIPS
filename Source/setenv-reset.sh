@@ -10,6 +10,9 @@ unset HOSTCC
 unset FIPS_SIG
 unset INSTALL_PREFIX
 unset cross_arch
+unset CC
+unset CONFIG_OPTIONS
+unset CROSS_CHAIN
 
 PATH=/usr/bin:$PATH
 

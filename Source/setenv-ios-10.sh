@@ -9,49 +9,31 @@
 #
 export CROSS_TYPE=Simulator
 export CROSS_TYPE=OS
+IOS_MIN_SDK_VERSION="8.0"
 cross_arch=""
 cross_arch="-armv7"
-IOS_MIN_SDK_VERSION="8.0"
-if [[ "${ARCH}" == "i386" || "${ARCH}" == "x86_64" ]]; then
-		PLATFORM="iPhoneSimulator"
-	else
-		PLATFORM="iPhoneOS"
-# 		sed -ie "s!static volatile sig_atomic_t intr_signal;!static volatile intr_signal;!" "crypto/ui/ui_openssl.c"
-fi
 
-DEVELOPER="`xcode-select -print-path`"
+CROSS_DEVELOPER=`xcode-select -print-path`
 # CROSS_DEVELOPER="/Applications//Xcode.app/Contents/Developer"
 
 # CROSS_TOP is the top of the development tools tree
-# export CROSS_TOP="/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer"
-export CROSS_TOP="${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer"
-	
-export BUILD_TOOLS="${DEVELOPER}"
-
-if [[ "${ARCH}" ]]; then
-	export CROSS_CHAIN="${BUILD_TOOLS}/usr/bin/gcc -fembed-bitcode -arch ${ARCH} "
-	export CC="${BUILD_TOOLS}/usr/bin/gcc -fembed-bitcode -arch ${ARCH} "
-else
-	export CROSS_CHAIN="${BUILD_TOOLS}/usr/bin/gcc -fembed-bitcode "
-	export CC="${BUILD_TOOLS}/usr/bin/gcc -fembed-bitcode "
-fi
+export CROSS_TOP="/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer"
 
 # CROSS_CHAIN is the location of the actual compiler tools
 #export CROSS_CHAIN="$CROSS_TOP"/usr/bin/
-# export CROSS_CHAIN=/usr/bin/
-
+export CROSS_CHAIN=/usr/bin/
+export CC="/usr/bin/gcc -fembed-bitcode"
 # CROSS_SDK is the SDK version being used - adjust as appropriate
 # for 4.3 or 5.0 (default)
 for i in 9.3 do
 do
-  if [ -d "$DEVELOPER/Platforms/iPhoneOS.platform//Developer/SDKs/iPhoneOS"$i".sdk" ]; then
+  if [ -d "$CROSS_DEVELOPER/Platforms/iPhoneOS.platform//Developer/SDKs/iPhoneOS"$i".sdk" ]; then
     SDKVER=$i
     break
   fi
 done
 
-# export CROSS_SDK=iPhone"$CROSS_TYPE""$SDKVER".sdk
-export CROSS_SDK="${PLATFORM}${SDK_VERSION}.sdk"
+export CROSS_SDK=iPhone"$CROSS_TYPE""$SDKVER".sdk
 
 #
 # fips/sha/Makefile uses HOSTCC for building fips_standalone_sha1
@@ -96,3 +78,4 @@ export PATH="`pwd`"/iOS:$PATH
 # for iOS we have not plugged in ASM or SHLIB support so we disable
 # those options for now
 export CONFIG_OPTIONS="no-asm no-shared --openssldir=$IOS_INSTALLDIR"
+

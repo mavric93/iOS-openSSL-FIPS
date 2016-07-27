@@ -43,14 +43,56 @@ if [ "$RETURN_CODE" -eq "0" ] ; then
 #----------------------------------------------------------------------
 echo "Step 5 build FIPS Capable library"
 #----------------------------------------------------------------------
-./step5_build_FIPS_capable_library.sh 1>>$LOGFILE 2>&1
+	
 
-	if [ $? -eq 0 ] ; then
-	  RETURN_CODE=0
-	else
-	  echo "\t***error***"
+
+
+if [ $RETURN_CODE -eq 0 ] ; then
+	echo "\t* Arch armv7..."
+	./step5_build_FIPS_capable_library.sh armv7 1>>$LOGFILE 2>&1
+	
+	if [ $? -ne 0 ] ; then
+		echo "\t***error***"
 	  RETURN_CODE=1
 	fi
+fi
+
+if [ $RETURN_CODE -eq 0 ] ; then
+	echo "\t* Arch arm64..."
+	./step5_build_FIPS_capable_library.sh arm64 1>>$LOGFILE 2>&1
+
+	if [ $? -ne 0 ] ; then
+		echo "\t***error***"
+	  RETURN_CODE=1
+	fi
+fi
+
+if [ "$RETURN_CODE" -eq "0" ] ; then
+	echo "\t* Arch armv7s..."
+	./step5_build_FIPS_capable_library.sh armv7s 1>>$LOGFILE 2>&1
+	
+	if [ $? -ne 0 ] ; then
+		echo "\t***error***"
+	  RETURN_CODE=1
+	fi
+fi
+
+if [ $RETURN_CODE -eq 0 ] ; then
+	echo "\t* Arch x86_64..."
+	./step5_build_FIPS_capable_library.sh x86_64 1>>$LOGFILE 2>&1
+	
+	if [ $? -ne 0 ] ; then
+		echo "\t***error***"
+	  RETURN_CODE=1
+	fi
+fi
+
+if [ "$RETURN_CODE" -eq "0" ] ; then
+	echo "\tDone building archs"
+  RETURN_CODE=0
+
+fi
+
 fi
 
 if [ "$RETURN_CODE" -eq "0" ] ; then
